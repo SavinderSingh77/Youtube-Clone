@@ -1,16 +1,19 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { faYoutube } from "@fortawesome/free-brands-svg-icons";
+import YoutubeLogo from "./Assets/youtube-logo-2431.png";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { showSearch } from "./Utilities/searchSlice";
 import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-
+import { toggle } from "./Utilities/toggleSideBar";
 const Header = () => {
   const { isShowSearchIcon } = useSelector((store) => store.searchSlice);
+  const toggleSideBar = () => {
+    dispatch(toggle());
+  };
 
   const dispatch = useDispatch();
   const showSearchHandler = (param) => {
@@ -24,7 +27,12 @@ const Header = () => {
   return (
     <header className="px-8 py-4 w-full  flex justify-center flex-wrap items-center gap-9 lg:justify-between">
       <div className="flex justify-start items-center gap-10 ">
-        <div className="w-12 h-12 flex justify-center items-center rounded-full hover:bg-zinc-700">
+        <div
+          className="w-12 h-12 flex justify-center items-center rounded-full hover:bg-zinc-700"
+          onClick={() => {
+            toggleSideBar();
+          }}
+        >
           {" "}
           <FontAwesomeIcon
             icon={faBars}
@@ -33,10 +41,7 @@ const Header = () => {
         </div>
 
         <div className="flex justify-center items-center gap-2 cursor-pointer">
-          <FontAwesomeIcon
-            icon={faYoutube}
-            className="text-red-600 text-3xl "
-          />
+          <img src={YoutubeLogo} alt="logo" className="w-8" />
           <h3 className="text-white font-semibold text-2xl">YouTube</h3>
         </div>
       </div>
@@ -74,7 +79,7 @@ const Header = () => {
         <div className="flex justify-center items-center cursor-pointer rounded-full bg-gray-600 w-10 h-10 hover:bg-gray-800">
           <FontAwesomeIcon
             icon={faMicrophone}
-            className="text-white cursor-pointer "
+            className="text-white cursor-pointer"
           />
         </div>
       </div>
