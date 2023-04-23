@@ -6,7 +6,7 @@ const searchSlice = createSlice({
   },
   reducers: {
     showSearch: (state, actions) => {
-      state.isShowSearchIcon = actions.payload
+      state.isShowSearchIcon = actions.payload;
     },
   },
 });
