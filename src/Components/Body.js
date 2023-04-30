@@ -4,7 +4,7 @@ import SideBar from './SideBar'
 
 function Body() {
   return (
-   <div className='flex h-[100vh] justify-between items-center'>
+   <div className='w-full flex gap-8 justify-between items-start'>
    <SideBar />
    <MainContainer />
   </div>

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const toggleSideBar = createSlice({
   name: "toggleSideBar",
   initialState: {
-    isOpen: true,
+    isOpen: false,
   },
   reducers: {
     toggle: (state) => {
