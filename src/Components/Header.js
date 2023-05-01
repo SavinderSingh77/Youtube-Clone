@@ -13,6 +13,7 @@ import { faSun } from "@fortawesome/free-solid-svg-icons";
 import { switchMode } from "./Utilities/toggleMode";
 import { useEffect, useState } from "react";
 import useSearch from "./useSearch";
+import { Link } from "react-router-dom";
 import {
   API_URL_PART_1,
   API_DEFAULT_PART_2_URL,
@@ -192,7 +193,10 @@ const Header = () => {
               }}
             />
           )}
+
+          
         </div>
+      
       </div>
     </header>
   );

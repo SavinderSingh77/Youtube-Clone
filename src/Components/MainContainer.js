@@ -4,9 +4,8 @@ import Shimmer from "./Shimmer";
 import { useSelector } from "react-redux";
 
 function MainContainer() {
-
   const { data, isLoading } = useSelector((store) => store.API_DATA.items);
-  console.log(data,isLoading)
+  console.log(data, isLoading);
 
   return !data.length ? (
     <div className="my-10  mr-4  flex flex-wrap justify-center items-start gap-12">
@@ -24,7 +23,7 @@ function MainContainer() {
       {isLoading && (
         <>
           <div className="my-10  mr-4  flex flex-wrap justify-center items-start gap-12">
-            {Array(4)
+            {Array(8)
               .fill("")
               .map((shimmer, index) => (
                 <Shimmer key={index} />

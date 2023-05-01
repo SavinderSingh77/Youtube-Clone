@@ -6,6 +6,7 @@ import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
 import { faClapperboard } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 function SideBar() {
   const { isOpen } = useSelector((store) => store.toggleSideBar);
   return !isOpen ? null : (
@@ -13,12 +14,17 @@ function SideBar() {
       <div className="flex flex-col gap-4">
         <div className=" w-full px-4 rounded-md  flex items-center justify-start gap-6 cursor-pointer  hover:bg-neutral-300  dark:hover:bg-zinc-800">
           <FontAwesomeIcon icon={faHouse} className="text-xl py-3" />
-          <span className="">Home</span>
+          <Link to="/">
+            <span className="">Home</span>
+          </Link>
         </div>
 
         <div className=" w-full px-4 rounded-md  flex items-center justify-start gap-6 cursor-pointer hover:bg-neutral-300  dark:hover:bg-zinc-800">
           <FontAwesomeIcon icon={faIcons} className="text-2xl py-3" />
-          <span className="">Shorts</span>
+          <Link to="/shorts">
+            {" "}
+            <span className="">Shorts</span>{" "}
+          </Link>
         </div>
 
         <div className=" w-full px-4 rounded-md  flex items-center justify-start gap-6 cursor-pointer hover:bg-neutral-300  dark:hover:bg-zinc-800">

@@ -26,11 +26,10 @@ const useVideos = (
     dispatch(getVideos(data));
   };
   useEffect(() => {
-    
     setData([]);
     getCard();
   }, [runAPI]);
-  console.log("API IS BEING HIT");
+
   useEffect(() => {
     handleAPIData([data, isLoading]);
   }, [isLoading]);
