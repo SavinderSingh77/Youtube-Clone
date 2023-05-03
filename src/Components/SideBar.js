@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { faIcons } from "@fortawesome/free-solid-svg-icons";
@@ -9,8 +9,20 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 function SideBar() {
   const { isOpen } = useSelector((store) => store.toggleSideBar);
-  return !isOpen ? null : (
-    <div className="w-48 h-full  flex flex-col justify-start itens-center gap-6 z-30 fixed left-0 bg-white dark:bg-black">
+  const [offsetLeft, setOffsetLeft] = useState("0px");
+  useEffect(() => {
+    !isOpen ? setOffsetLeft("-50%") : setOffsetLeft("0px");
+  }, [isOpen]);
+  const sidebarStyle = {
+    left: offsetLeft,
+    transition: "left 0.5s ease-in-out", // Add transition property
+  };
+
+  return (
+    <div
+      className={`fixed   w-48 h-full  flex flex-col justify-start itens-center gap-6 z-30  bg-white dark:bg-black`}
+      style={sidebarStyle}
+    >
       <div className="flex flex-col gap-4">
         <div className=" w-full px-4 rounded-md  flex items-center justify-start gap-6 cursor-pointer  hover:bg-neutral-300  dark:hover:bg-zinc-800">
           <FontAwesomeIcon icon={faHouse} className="text-xl py-3" />

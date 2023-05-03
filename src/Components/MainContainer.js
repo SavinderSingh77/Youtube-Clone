@@ -8,7 +8,7 @@ function MainContainer() {
   console.log(data, isLoading);
 
   return !data.length ? (
-    <div className="my-10  mr-4  flex flex-wrap justify-center items-start gap-12">
+    <div className="my-10  flex flex-wrap justify-center items-start gap-12">
       {Array(12)
         .fill("")
         .map((shimmer, index) => (

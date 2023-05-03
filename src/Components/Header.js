@@ -28,7 +28,6 @@ const Header = () => {
   const [apiPart2, setApiPart2] = useState(API_DEFAULT_PART_2_URL);
   const [apiPart3, setApiPart3] = useState(API_SERACH_TEXT);
   console.log(apiPart2 + apiPart3);
-  console.log("1111");
   useVideos(API_URL_PART_1, apiPart2, apiPart3, API_KEY);
 
   const dispatch = useDispatch();
@@ -63,7 +62,7 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 dark:bg-black bg-white px-8 py-4 w-full  flex justify-start items-center gap-9 sm:justify-between  flex-wrap z-20">
+    <header className="sticky top-0 dark:bg-black bg-white px-8 pb-16 md:pb-4 pt-4 w-full  flex justify-between items-center gap-9 z-20">
       <div className="flex justify-start items-center gap-4 sm:gap-10basis-full md:basis-auto ">
         <div
           className="w-12 h-12 flex justify-center items-center rounded-full hover:bg-neutral-300 dark:hover:bg-zinc-700"
@@ -84,9 +83,9 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="flex justify-center items-center gap-5   w-full sm:w-auto">
+      <div className="flex justify-center items-center gap-5  w-[80%] max-w-[600px] top-[80px] left-[10%]  absolute md:static">
         <div
-          className={`flex justify-between items-center h-10  rounded-full outline-1 outline relative ${
+          className={`flex basis-full justify-between items-center h-10  rounded-full outline-1 outline relative ${
             !isShowSearchIcon
               ? " outline-neutral-500 dark:outline-white"
               : " outline-cyan-600"
@@ -127,7 +126,7 @@ const Header = () => {
 
           <input
             type="text"
-            className="px-8 py-2 bg-transparent w-full basis-full xl:basis-auto  sm:w-96 focus:outline-none"
+            className="px-5 py-2 bg-transparent w-full basis-full xl:basis-auto  focus:outline-none"
             placeholder="Search Videos"
             value={searchText}
             onChange={(e) => {
@@ -139,7 +138,6 @@ const Header = () => {
             }}
             onBlur={() => {
               hideSearchHandler(false);
-              // setShowSuggestionsBox(false);
               setTimeout(() => {
                 setShowSuggestionsBox(false);
               }, 100);
@@ -168,7 +166,7 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="flex justify-end items-center gap-8 fixed right-4 top-5 md:static ">
+      <div className="flex justify-end items-center gap-3 ">
         <div className="flex justify-center items-center w-12 h-12 border border-solid border-slate-800 rounded-full bg-gray-50   ">
           <FontAwesomeIcon
             icon={faUser}
@@ -193,10 +191,7 @@ const Header = () => {
               }}
             />
           )}
-
-          
         </div>
-      
       </div>
     </header>
   );
