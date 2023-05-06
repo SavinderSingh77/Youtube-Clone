@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 function SideBar() {
   const { isOpen } = useSelector((store) => store.toggleSideBar);
-  const [offsetLeft, setOffsetLeft] = useState("0px");
+  const [offsetLeft, setOffsetLeft] = useState("-50%");
   useEffect(() => {
     !isOpen ? setOffsetLeft("-50%") : setOffsetLeft("0px");
   }, [isOpen]);

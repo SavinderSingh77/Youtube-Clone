@@ -25,6 +25,7 @@ const useVideos = (
   const handleAPIData = (data) => {
     dispatch(getVideos(data));
   };
+  
   useEffect(() => {
     setData([]);
     getCard();
@@ -46,6 +47,9 @@ const useVideos = (
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pageToken]);
+
+
+
   async function getCard() {
     setIsLoading(true);
     const data = await fetch(`${API_URL}&pageToken=${pageToken}`);

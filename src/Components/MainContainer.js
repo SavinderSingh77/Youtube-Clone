@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 function MainContainer() {
   const { data, isLoading } = useSelector((store) => store.API_DATA.items);
-  console.log(data, isLoading);
+  
 
   return !data.length ? (
     <div className="my-10  flex flex-wrap justify-center items-start gap-12">

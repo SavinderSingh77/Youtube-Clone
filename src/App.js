@@ -5,6 +5,8 @@ import { Outlet, createBrowserRouter } from "react-router-dom";
 import SideBar from "./Components/SideBar";
 import MainContainer from "./Components/MainContainer";
 import Shorts from "./Components/Shorts";
+import WatchPage from "./Components/Watchpage.js"
+import Dictaphone1 from "./Components/SpeechToText";
 
 function App() {
   return (
@@ -28,9 +30,17 @@ const AppRouter2 = createBrowserRouter([
         element: <MainContainer />,
       },
       {
+        path:"/mic",
+        element : <Dictaphone1 />
+      },
+      {
         path: "/shorts",
         element: <Shorts />,
       },
+      {
+        path : "/Watch/:videoId",
+        element : <WatchPage />
+      }
     ],
   },
 ]);

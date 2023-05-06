@@ -1,4 +1,7 @@
+import { Link } from "react-router-dom";
+
 const Card = ({ data }) => {
+  const videoId = data?.id?.videoId || data?.id 
   function formatLikeCount(likeCount) {
     if(!likeCount){
       return
@@ -43,7 +46,7 @@ const Card = ({ data }) => {
   }
 
   return (
-    <>
+    <Link to = {`/watch/${videoId}`}>
       <div className="w-72 flex flex-col items-center cursor-pointer  hover:scale-105 transition-all duration-200 ease-in-out  ">
         <div className="w-72 ">
           <img
@@ -72,7 +75,7 @@ const Card = ({ data }) => {
           </div>
         </div>
       </div>
-    </>
+    </Link>
   );
 };
 export default Card;

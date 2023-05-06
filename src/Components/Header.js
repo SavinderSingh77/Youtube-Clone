@@ -13,7 +13,11 @@ import { faSun } from "@fortawesome/free-solid-svg-icons";
 import { switchMode } from "./Utilities/toggleMode";
 import { useEffect, useState } from "react";
 import useSearch from "./useSearch";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { useSpeechToText } from "./useSpeechToText";
+import { faMicrophoneSlash } from "@fortawesome/free-solid-svg-icons";
+
 import {
   API_URL_PART_1,
   API_DEFAULT_PART_2_URL,
@@ -25,9 +29,16 @@ import useVideos from "./Utilities/useVideos";
 import { setCount } from "./Utilities/countSlice";
 
 const Header = () => {
+  const [showMic, setShowMic] = useState(false);
+  const [resetTranscript, listenContinuously, listenStop, transcript] =
+    useSpeechToText();
+
+  useEffect(() => {
+    setSearchText(transcript);
+  }, [transcript]);
+
   const [apiPart2, setApiPart2] = useState(API_DEFAULT_PART_2_URL);
   const [apiPart3, setApiPart3] = useState(API_SERACH_TEXT);
-  console.log(apiPart2 + apiPart3);
   useVideos(API_URL_PART_1, apiPart2, apiPart3, API_KEY);
 
   const dispatch = useDispatch();
@@ -61,9 +72,32 @@ const Header = () => {
     dispatch(showSearch(param));
   };
 
+  // We should move to home route with searched suggestion so we need to navigate
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    const enter = (e) => {
+      if (e.key === "Enter") {
+        if (searchText) {
+          navigate("/");
+          hideSearchHandler(false);
+          setShowSuggestionsBox(false);
+          setApiPart2(API_URL_SEARCH_PART_2);
+          setApiPart3(searchText);
+          HandleSetCount();
+          window.scrollTo(0, 0);
+        }
+      }
+    };
+
+    window.addEventListener("keyup", enter);
+
+    return () => window.removeEventListener("keyup", enter);
+  }, [searchText]);
+
   return (
     <header className="sticky top-0 dark:bg-black bg-white px-8 pb-16 md:pb-4 pt-4 w-full  flex justify-between items-center gap-9 z-20">
-      <div className="flex justify-start items-center gap-4 sm:gap-10basis-full md:basis-auto ">
+      <div className="flex justify-start items-center gap-6 sm:gap-10basis-full md:basis-auto ">
         <div
           className="w-12 h-12 flex justify-center items-center rounded-full hover:bg-neutral-300 dark:hover:bg-zinc-700"
           onClick={() => {
@@ -73,7 +107,7 @@ const Header = () => {
           {" "}
           <FontAwesomeIcon
             icon={faBars}
-            className="cursor-pointer text-2xl "
+            className="cursor-pointer text-[25px] "
           />{" "}
         </div>
 
@@ -144,25 +178,60 @@ const Header = () => {
             }}
           />
 
-          <div
-            className="w-20 h-full flex justify-center items-center border-l border-solid border-zinc-700 bg-neutral-800  dark:bg-neutral-700 rounded-r-full cursor-pointer "
-            onClick={() => {
-              if (searchText) {
-                setApiPart2(API_URL_SEARCH_PART_2);
-                setApiPart3(searchText);
-                HandleSetCount();
-                window.scrollTo(0, 0);
-              }
-            }}
-          >
-            <FontAwesomeIcon icon={faMagnifyingGlass} className="text-white" />
-          </div>
+          {searchText && (
+            <div
+              className="  h-full cursor-pointer  text-xl px-4 flex justify-center items-center "
+              onClick={() => {
+                setSearchText("");
+              }}
+            >
+              {" "}
+              <FontAwesomeIcon icon={faXmark} />
+            </div>
+          )}
+          <Link to="/" className="bg-none h-full">
+            {" "}
+            <div
+              className="w-20 h-full flex justify-center items-center border-l border-solid border-zinc-700 bg-neutral-800  dark:bg-neutral-700 rounded-r-full cursor-pointer "
+              onClick={() => {
+                if (searchText) {
+                  setApiPart2(API_URL_SEARCH_PART_2);
+                  setApiPart3(searchText);
+                  HandleSetCount();
+                  window.scrollTo(0, 0);
+                }
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faMagnifyingGlass}
+                className="text-white"
+              />
+            </div>
+          </Link>
         </div>
-        <div className="flex justify-center items-center cursor-pointer rounded-full w-10 h-10 hover:bg-neutral-300 dark:hover:bg-gray-800">
-          <FontAwesomeIcon
+
+        <div className="flex justify-center w-8 h-8 items-center cursor-pointer rounded-full hover:bg-neutral-300 dark:hover:bg-gray-800">
+          {showMic ? (
+            <FontAwesomeIcon
+              onClick={() => {
+                listenContinuously();
+                setShowMic(false);
+              }}
+            
+              icon={faMicrophoneSlash}
+              className="cursor-pointer dark:text-white "
+            />
+          ) : (
+            <FontAwesomeIcon
             icon={faMicrophone}
-            className="cursor-pointer dark:text-white "
-          />
+              className="cursor-pointer dark:text-white "
+              onClick={() => {
+                listenStop();
+                setShowMic(true);
+                resetTranscript()
+              }}
+            />
+          )}
         </div>
       </div>
 
