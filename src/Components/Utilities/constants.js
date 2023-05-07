@@ -12,4 +12,74 @@ const API_URL =
 export const SEARCH_API_URL =
   API_URL_PART_1 + API_URL_SEARCH_PART_2 + API_SERACH_TEXT + API_KEY;
 
+export const nestedComments = [
+  {
+    id: 1,
+    text: "I think this topic is very interesting.",
+    author: "Karen Smith",
+    replies: [
+      {
+        id: 2,
+        text: "I agree with you, Karen!",
+        author: "Bob Johnson",
+        replies: [
+          {
+            id: 3,
+            text: "I also find it fascinating.",
+            author: "Emily Davis",
+            replies: [
+              {
+                id: 4,
+                text: "Yes, this is a great discussion.",
+                author: "Bob Johnson",
+                replies: [],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 5,
+    text: "I have a different perspective on this topic.",
+    author: "Michael Lee",
+    replies: [
+      {
+        id: 6,
+        text: "Interesting, can you share more about your viewpoint?",
+        author: "Karen Smith",
+        replies: [
+          {
+            id: 7,
+            text: "I'm also curious to hear more.",
+            author: "Emily Davis",
+            replies: [
+              {
+                id: 8,
+                text: "Me too!",
+                author: "Bob Johnson",
+                replies: [],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 9,
+    text: "I think we should all try to keep an open mind.",
+    author: "Sarah Brown",
+    replies: [
+      {
+        id: 10,
+        text: "I completely agree, Sarah.",
+        author: "Michael Lee",
+        replies: [],
+      },
+    ],
+  },
+];
+
 export default API_URL;
