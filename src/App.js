@@ -6,7 +6,7 @@ import SideBar from "./Components/SideBar";
 import MainContainer from "./Components/MainContainer";
 import Shorts from "./Components/Shorts";
 import WatchPage from "./Components/Watchpage.js"
-import Dictaphone1 from "./Components/SpeechToText";
+
 
 function App() {
   return (
@@ -28,10 +28,6 @@ const AppRouter2 = createBrowserRouter([
       {
         path: "/",
         element: <MainContainer />,
-      },
-      {
-        path:"/mic",
-        element : <Dictaphone1 />
       },
       {
         path: "/shorts",

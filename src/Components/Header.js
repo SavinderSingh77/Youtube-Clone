@@ -183,6 +183,7 @@ const Header = () => {
               className="  h-full cursor-pointer  text-xl px-4 flex justify-center items-center "
               onClick={() => {
                 setSearchText("");
+                resetTranscript();
               }}
             >
               {" "}
@@ -195,10 +196,17 @@ const Header = () => {
               className="w-20 h-full flex justify-center items-center border-l border-solid border-zinc-700 bg-neutral-800  dark:bg-neutral-700 rounded-r-full cursor-pointer "
               onClick={() => {
                 if (searchText) {
+                 
                   setApiPart2(API_URL_SEARCH_PART_2);
                   setApiPart3(searchText);
                   HandleSetCount();
                   window.scrollTo(0, 0);
+                  listenStop();
+                  setShowMic(false);
+
+            
+                 
+                  
                 }
               }}
             >
@@ -211,24 +219,23 @@ const Header = () => {
         </div>
 
         <div className="flex justify-center w-8 h-8 items-center cursor-pointer rounded-full hover:bg-neutral-300 dark:hover:bg-gray-800">
-          {showMic ? (
+          {!showMic ? (
             <FontAwesomeIcon
               onClick={() => {
                 listenContinuously();
-                setShowMic(false);
+                setShowMic(true);
               }}
-            
               icon={faMicrophoneSlash}
               className="cursor-pointer dark:text-white "
             />
           ) : (
             <FontAwesomeIcon
-            icon={faMicrophone}
+              icon={faMicrophone}
               className="cursor-pointer dark:text-white "
               onClick={() => {
                 listenStop();
-                setShowMic(true);
-                resetTranscript()
+                setShowMic(false);
+                resetTranscript();
               }}
             />
           )}
