@@ -4,7 +4,7 @@ const WatchPage = () => {
   const { videoId } = useParams();
 
   return (
-    <div className="w-[100%] border bg-white dark:bg-slate-950 border-solid border-red-900 flex flex-col ">
+    <div className="w-[100%] border border-solid border-red-900 flex flex-col ">
       <iframe
         className="w-[70%] h-[500px] my-8  "
         frameBorder={0}
