@@ -26,6 +26,7 @@ const commentSlice = createSlice({
         return false;
       };
       addCommentRecursively(state.items);
+      return state
     },
 
     deleteComment: (state, action) => {
@@ -44,8 +45,31 @@ const commentSlice = createSlice({
 
       deleteCommentRecursively(state.items);
     },
+    editComment: (state, action) => {
+      // {id : "100", author : "Savinder", text : "jdfjjkfdjghl", replies : []} = action.payload
+      // state.items =  [{id : '1', author :"Bob", text : "lorem ipsum", replies :[id :"100" author : "Savinder"]}, {}, {}, {}]
+      const editCommentRecursively = (comments) => {
+        const [text, editedComment] = action.payload;
+        for (let i = 0; i < comments?.length; i++) {
+          if (comments[i].id === editedComment.id) {
+            comments[i].text = text
+            console.log(text)
+            return true;
+          } else if (comments[i].replies.length > 0) {
+            editCommentRecursively(comments[i].replies);
+            if (editCommentRecursively(comments[i].replies)) {
+              return true;
+            }
+          }
+        }
+        console.log("false");
+        return false;
+      };
+      editCommentRecursively(state.items);
+      return state
+    },
   },
 });
 
-export const { addComment, deleteComment } = commentSlice.actions;
+export const { addComment, deleteComment, editComment } = commentSlice.actions;
 export default commentSlice.reducer;

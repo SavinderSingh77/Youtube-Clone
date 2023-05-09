@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { addComment, deleteComment } from "./Utilities/commentSlice";
+import {
+  addComment,
+  deleteComment,
+  editComment,
+} from "./Utilities/commentSlice";
 
 import { useDispatch } from "react-redux";
 
@@ -10,7 +14,9 @@ const WriteComment = ({ data, handleWriteComment, isReply, isEdit }) => {
     return Math.random().toString(36).slice(2, 9);
   };
   const dispatch = useDispatch();
-
+  const handleEditComment = (arr) => {
+    dispatch(editComment(arr));
+  };
   const handleAddComment = () => {
     dispatch(
       addComment([
@@ -25,6 +31,14 @@ const WriteComment = ({ data, handleWriteComment, isReply, isEdit }) => {
       ])
     );
   };
+
+  useEffect(() => {
+    if (isEdit) {
+      setText(data.text);
+    } else if (isReply) {
+      setText("");
+    }
+  }, [isEdit, isReply]);
 
   return (
     <div className="flex flex-col gap-2 px-12 justify-center items-center ">
@@ -45,7 +59,8 @@ const WriteComment = ({ data, handleWriteComment, isReply, isEdit }) => {
               handleWriteComment(false);
               handleAddComment();
             } else {
-              alert("Edit");
+              handleEditComment([text, data]);
+              handleWriteComment(false);
             }
           }}
         >
@@ -95,7 +110,7 @@ const Comment = ({ data }) => {
           onClick={() => {
             setWriteComment(true);
             setIsReply(true);
-           
+            setIsEdit(false);
           }}
         >
           Reply
@@ -117,7 +132,7 @@ const Comment = ({ data }) => {
             className="pl-12 pb-2 pt-1 cursor-pointer font-bold text-green-700 hover:text-green-900"
             onClick={() => {
               setWriteComment(true);
-             
+              setIsEdit(true);
               setIsReply(false);
             }}
           >
