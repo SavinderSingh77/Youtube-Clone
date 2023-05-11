@@ -2,17 +2,19 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   addComment,
+  addTopLevelComment,
   deleteComment,
   editComment,
 } from "./Utilities/commentSlice";
 
 import { useDispatch } from "react-redux";
+const generateUniqueId = () => {
+  return Math.random().toString(36).slice(2, 9);
+};
 
 const WriteComment = ({ data, handleWriteComment, isReply, isEdit }) => {
   const [text, setText] = useState("");
-  const generateUniqueId = () => {
-    return Math.random().toString(36).slice(2, 9);
-  };
+
   const dispatch = useDispatch();
   const handleEditComment = (arr) => {
     dispatch(editComment(arr));
@@ -63,6 +65,7 @@ const WriteComment = ({ data, handleWriteComment, isReply, isEdit }) => {
               handleWriteComment(false);
             }
           }}
+          disabled={!text}
         >
           {isReply ? "Sumbit" : "Edit"}
         </button>
@@ -72,6 +75,7 @@ const WriteComment = ({ data, handleWriteComment, isReply, isEdit }) => {
           onClick={() => {
             handleWriteComment(false);
           }}
+          disabled={!text}
         >
           Cancel
         </button>
@@ -119,7 +123,6 @@ const Comment = ({ data }) => {
           <h3
             className="pl-12 pb-2 pt-1 cursor-pointer font-bold text-red-700 hover:text-red-900"
             onClick={() => {
-              console.log(data);
               handleDeleteComment(data);
             }}
           >
@@ -173,9 +176,46 @@ const CommentList = ({ list }) => {
 
 const NestedComments = () => {
   const { items } = useSelector((store) => store.comment);
-  console.log(items);
+  const dispatch = useDispatch();
+  const handleTopLevelComment = (data) => {
+    dispatch(addTopLevelComment(data));
+  };
+  const [text, setText] = useState("");
   return (
-    <div className=" flex flex-col px-6 gap-2 max-w-[70%]">
+    <div className=" flex flex-col px-6 gap-2 w-100% ">
+      <h2 className="font-bold text-2xl text-blue-700 pb-5 ">Comments</h2>
+      <div className="flex justify-between gap-1 items-center">
+        <span className="flex text-md  px-4 text-white font-bold justify-center items-center w-[40px] h-[40px] rounded-full bg-stone-700 ">
+          {"S"}
+        </span>{" "}
+        <textarea
+          type="text"
+          placeholder="Write a Comment"
+          value={text}
+          onChange={(e) => {
+            setText(e.target.value);
+          }}
+          className=" basis-full bg-white dark:bg-black px-3 font-semibold  pt-6  outline-none border-none  rounded-lg text-black dark:text-white"
+        ></textarea>
+        <button
+          className="px-4 py-2 border-stone-700 border rounded-3xl font-semibold bg-black text-white hover:bg-white hover:text-black transition-all duration-500 ease-in-out active:scale-95"
+          onClick={() => {
+            handleTopLevelComment({
+              id: generateUniqueId(),
+              control: true,
+              author: "Savinder",
+              text: text,
+              replies: [],
+            });
+            setText("");
+          }}
+          disabled={!text}
+        >
+          Comment
+        </button>
+      </div>
+      <div className="border-b border-stone-700 mb-6  "></div>
+
       <CommentList list={items} />
     </div>
   );

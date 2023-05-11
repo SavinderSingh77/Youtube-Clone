@@ -82,4 +82,13 @@ export const nestedComments = [
   },
 ];
 
+export const SUGGESTIONS_VIDEOS_URL_PART_1 = "https://www.googleapis.com/youtube/v3/search?part=snippet&relatedToVideoId="
+export const VIDEO_ID = "";
+export const SUGGESTIONS_VIDEOS_URL_PART_3 = "&type=video&maxResults=16"
+
+
+
+export const API_KEY_CODE = process.env.REACT_APP_API
+
+//
 export default API_URL;

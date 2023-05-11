@@ -1,19 +1,130 @@
 import { useParams } from "react-router-dom";
 import NestedComments from "./NestedComments";
+import SuggestedVideos from "./SuggestedVideos";
+import { useEffect, useState } from "react";
+import { BsPersonCircle } from "react-icons/bs";
+import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
+import { TbShare3, TbDots } from "react-icons/tb";
+import { TfiDownload } from "react-icons/tfi";
+import { useSelector } from "react-redux";
+import { API_KEY_CODE } from "./Utilities/constants";
+
 const WatchPage = () => {
+  const { channelInfo } = useSelector((store) => store.channel);
+  const [stats, setStats] = useState([]);
   const { videoId } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
+  const [readMore, setReadMore] = useState(false);
+  async function channel() {
+
+    const fetchData = await fetch(
+      `https://www.googleapis.com/youtube/v3/videos?key=${API_KEY_CODE}&part=snippet,statistics&id=${channelInfo?.id?.videoId}`
+    );
+    const dataJson = await fetchData.json();
+    setStats(dataJson.items);
+    console.log(dataJson);
+   
+  }
+  useEffect(() => {
+    channel();
+  }, []);
+
+  useEffect(() => {
+    channel();
+  }, [channelInfo]);
+
+  useEffect(() => {
+    function handleBeforeUnload() {
+      window.scrollTo(0, 0);
+    }
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  const handleOnLoad = () => {
+    setIsLoading(false);
+  };
 
   return (
-    <div className="w-[100%] border border-solid border-red-900 flex flex-col ">
-      <iframe
-        className="w-[70%] h-[500px] my-8  "
-        frameBorder={0}
-        src={"https://www.youtube.com/embed/" + videoId}
-        title="YouTube video player"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowFullScreen
-      ></iframe>
-      {<NestedComments />}
+    <div className="flex flex-col lg:flex-row w-[100vw] justify-center gap-20  pt-4 px-3">
+      <div className=" flex flex-col w-[100%] lg:w-[70%] ">
+        <div className="w-[100%] lg:w-[100%]">
+          <iframe
+            className={`w-full aspect-video  my-2 ${
+              isLoading
+                ? "bg-gray-200 dark:bg-gray-800 animate-pulse"
+                : "bg-none"
+            }`}
+            frameBorder={0}
+            src={"https://www.youtube.com/embed/" + videoId}
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            playsInline
+            muted
+            autoPlay
+            onLoad={handleOnLoad}
+          ></iframe>
+          <div className="flex justify-between flex-wrap md:flex-nowrap items-center md:gap-9 gap-3 my-8">
+            <div className="flex justify-center gap-2 items-center">
+              <BsPersonCircle className="md:text-4xl text-lg mb-1 cursor-pointer"></BsPersonCircle>
+              <div className="flex flex-col">
+                <h2 className="font-semibold md:text-base text-sm">
+                  {stats[0]?.snippet?.channelTitle}
+                </h2>
+                <span className="text-xs text-stone-500">
+                  4.21K subscribers
+                </span>
+              </div>
+              <button className=" mx-6 px-4 py-2 border-stone-700 border rounded-3xl font-semibold bg-black text-white hover:bg-white hover:text-black transition-all duration-500 ease-in-out active:scale-95">
+                Subscribe
+              </button>
+            </div>
+            <div className="flex justify-center gap-2 pr-2 dark:text-black">
+              <div className="flex justify-center items-center">
+                <button className="bg-stone-100 font-semibold flex justify-center gap-2 items-center md:p-2 p-1 rounded-l-full border-r-2 border-stone-200 md:text-base text-xs hover:bg-stone-200">
+                  <AiOutlineLike className="md:text-2xl"></AiOutlineLike> 106
+                </button>
+                <button className="bg-stone-100 md:p-2 p-1 rounded-r-full hover:bg-stone-200">
+                  <AiOutlineDislike className="md:text-2xl"></AiOutlineDislike>
+                </button>
+              </div>
+              <button className="bg-stone-100 font-semibold flex gap-1 items-center md:px-4 md:py-2 px-2 py-1 rounded-full md:text-base text-xs hover:bg-stone-200">
+                <TbShare3 className="md:text-xl"></TbShare3> Share
+              </button>
+              <button className="bg-stone-100 font-semibold flex gap-1 items-center md:px-4 md:py-2 px-2 py-1 rounded-full hover:bg-stone-200 md:text-base text-xs">
+                <TfiDownload></TfiDownload> Download
+              </button>
+              <button className="bg-stone-100 md:px-3 px-2 py-1 rounded-full hover:bg-stone-200">
+                <TbDots className="md:text-xl"></TbDots>
+              </button>
+            </div>
+          </div>
+          <div className=" ">
+            <span className="w-[90%] pr-4">
+              {" "}
+              {stats[0]?.snippet?.description.length > 550 && !readMore
+                ? stats[0]?.snippet?.description.slice(0, 550) + "....."
+                : stats[0]?.snippet?.description}{" "}
+            </span>{" "}
+            <span
+              className=" cursor-pointer"
+              onClick={() => {
+                setReadMore(!readMore);
+              }}
+            >
+              {" "}
+              {!readMore ? "Read More" : "Read Less"}{" "}
+            </span>
+          </div>
+        </div>
+        {<NestedComments />}
+      </div>
+      <SuggestedVideos />
     </div>
   );
 };

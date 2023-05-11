@@ -10,7 +10,7 @@ import WatchPage from "./Components/Watchpage.js"
 
 function App() {
   return (
-    <div className=" dark:text-gray-100 dark:bg-black transition-all duration-100 ease-in-out">
+    <div className=" mx-auto dark:text-gray-100 dark:bg-black transition-all duration-100 ease-in-out">
       <Header />
       <div className="flex justify-between gap-3 transition-all relative ">
         <SideBar />

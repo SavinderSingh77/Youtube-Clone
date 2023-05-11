@@ -68,8 +68,11 @@ const commentSlice = createSlice({
       editCommentRecursively(state.items);
       return state
     },
+    addTopLevelComment : (state, action) => {
+      state.items.unshift(action.payload)
+    }
   },
 });
 
-export const { addComment, deleteComment, editComment } = commentSlice.actions;
+export const { addComment, deleteComment, editComment, addTopLevelComment } = commentSlice.actions;
 export default commentSlice.reducer;

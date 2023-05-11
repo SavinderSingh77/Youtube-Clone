@@ -6,6 +6,7 @@ import cacheSuggestionsSlice from "./cacheSuggestionsSlice";
 import dataSlice from "./dataSlice";
 import countSlice from "./countSlice";
 import commentSlice from "./commentSlice";
+import channelSlice from "./channelSlice";
 const store = configureStore({
   reducer: {
     searchSlice: searchSlice,
@@ -15,6 +16,7 @@ const store = configureStore({
     API_DATA: dataSlice,
     countSlice: countSlice,
     comment: commentSlice,
+    channel: channelSlice,
   },
 });
 export default store;
