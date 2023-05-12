@@ -15,22 +15,25 @@ const WatchPage = () => {
   const { videoId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [readMore, setReadMore] = useState(false);
-  async function channel() {
+  const [subsCount, setSubsCount] = useState("");
 
+  async function channel(channelInfo) {
+    console.log(channelInfo?.id?.videoId || channelInfo?.id, channelInfo);
     const fetchData = await fetch(
-      `https://www.googleapis.com/youtube/v3/videos?key=${API_KEY_CODE}&part=snippet,statistics&id=${channelInfo?.id?.videoId}`
+      `https://www.googleapis.com/youtube/v3/videos?key=${API_KEY_CODE}&part=snippet,statistics&id=${
+        channelInfo?.id?.videoId || channelInfo?.id
+      }`
     );
     const dataJson = await fetchData.json();
     setStats(dataJson.items);
     console.log(dataJson);
-   
   }
   useEffect(() => {
-    channel();
+    channel(channelInfo);
   }, []);
 
   useEffect(() => {
-    channel();
+    channel(channelInfo);
   }, [channelInfo]);
 
   useEffect(() => {
@@ -48,6 +51,32 @@ const WatchPage = () => {
   const handleOnLoad = () => {
     setIsLoading(false);
   };
+
+  async function getSubscriberCount() {
+    const data = await fetch(
+      `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${stats[0]?.snippet?.channelId}&key=${API_KEY_CODE}`
+    );
+    const jsonData = await data.json();
+    setSubsCount(jsonData?.items?.[0]?.statistics?.subscriberCount);
+  }
+
+  useEffect(() => {
+    getSubscriberCount();
+  }, [stats]);
+
+  function formatCount(count) {
+    if (!count) {
+      return;
+    }
+    if (count < 1000) {
+      return count.toString() + "views";
+    } else if (count >= 1000 && count < 1000000) {
+      return (count / 1000).toFixed(1) + "K ";
+    } else {
+      return (count / 1000000).toFixed(1) + "M ";
+    }
+  }
+  console.log(stats);
 
   return (
     <div className="flex flex-col lg:flex-row w-[100vw] justify-center gap-20  pt-4 px-3">
@@ -77,7 +106,7 @@ const WatchPage = () => {
                   {stats[0]?.snippet?.channelTitle}
                 </h2>
                 <span className="text-xs text-stone-500">
-                  4.21K subscribers
+                  {formatCount(subsCount)} subscribers
                 </span>
               </div>
               <button className=" mx-6 px-4 py-2 border-stone-700 border rounded-3xl font-semibold bg-black text-white hover:bg-white hover:text-black transition-all duration-500 ease-in-out active:scale-95">
@@ -87,7 +116,8 @@ const WatchPage = () => {
             <div className="flex justify-center gap-2 pr-2 dark:text-black">
               <div className="flex justify-center items-center">
                 <button className="bg-stone-100 font-semibold flex justify-center gap-2 items-center md:p-2 p-1 rounded-l-full border-r-2 border-stone-200 md:text-base text-xs hover:bg-stone-200">
-                  <AiOutlineLike className="md:text-2xl"></AiOutlineLike> 106
+                  <AiOutlineLike className="md:text-2xl"></AiOutlineLike>{" "}
+                  {formatCount(stats[0]?.statistics?.likeCount)}
                 </button>
                 <button className="bg-stone-100 md:p-2 p-1 rounded-r-full hover:bg-stone-200">
                   <AiOutlineDislike className="md:text-2xl"></AiOutlineDislike>
