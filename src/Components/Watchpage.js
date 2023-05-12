@@ -16,6 +16,8 @@ const WatchPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [readMore, setReadMore] = useState(false);
   const [subsCount, setSubsCount] = useState("");
+  const [descp, setDescp] = useState("");
+  const [showDescription, setShowDescription] = useState(500);
 
   async function channel(channelInfo) {
     console.log(channelInfo?.id?.videoId || channelInfo?.id, channelInfo);
@@ -26,8 +28,9 @@ const WatchPage = () => {
     );
     const dataJson = await fetchData.json();
     setStats(dataJson.items);
-    console.log(dataJson);
+    setDescp(dataJson.items[0]?.snippet?.localized?.description);
   }
+  console.log(stats);
   useEffect(() => {
     channel(channelInfo);
   }, []);
@@ -69,14 +72,13 @@ const WatchPage = () => {
       return;
     }
     if (count < 1000) {
-      return count.toString() + "views";
+      return count.toString();
     } else if (count >= 1000 && count < 1000000) {
       return (count / 1000).toFixed(1) + "K ";
     } else {
       return (count / 1000000).toFixed(1) + "M ";
     }
   }
-  console.log(stats);
 
   return (
     <div className="flex flex-col lg:flex-row w-[100vw] justify-center gap-20  pt-4 px-3">
@@ -134,22 +136,30 @@ const WatchPage = () => {
               </button>
             </div>
           </div>
-          <div className=" ">
-            <span className="w-[90%] pr-4">
-              {" "}
-              {stats[0]?.snippet?.description.length > 550 && !readMore
-                ? stats[0]?.snippet?.description.slice(0, 550) + "....."
-                : stats[0]?.snippet?.description}{" "}
+          <div className=" flex flex-col gap-3">
+            <span className=" text-xl">
+              {stats[0]?.snippet?.localized?.title}
             </span>{" "}
-            <span
-              className=" cursor-pointer"
-              onClick={() => {
-                setReadMore(!readMore);
-              }}
-            >
-              {" "}
-              {!readMore ? "Read More" : "Read Less"}{" "}
-            </span>
+            <span className="pb-8">
+              {descp?.length > 500
+                ? descp.slice(0, showDescription) + ". . . "
+                : descp}
+              {descp?.length > 500 ? (
+                <button
+                  className=" text-md font-bold text-stone-500"
+                  onClick={() => {
+                    setReadMore(!readMore);
+                    if (readMore) {
+                      setShowDescription(500);
+                    } else {
+                      setShowDescription(descp.length);
+                    }
+                  }}
+                >
+                  {!readMore ? "Read More" : "Read Less"}
+                </button>
+              ) : null}
+            </span>{" "}
           </div>
         </div>
         {<NestedComments />}

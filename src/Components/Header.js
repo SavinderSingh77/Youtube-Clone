@@ -18,8 +18,6 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useSpeechToText } from "./useSpeechToText";
 import { faMicrophoneSlash } from "@fortawesome/free-solid-svg-icons";
 
-
-
 import {
   API_URL_PART_1,
   API_DEFAULT_PART_2_URL,
@@ -31,7 +29,8 @@ import useVideos from "./Utilities/useVideos";
 import { setCount } from "./Utilities/countSlice";
 
 const Header = () => {
- 
+  const category = useSelector((store) => store.category.category);
+
   const [showMic, setShowMic] = useState(false);
   const [resetTranscript, listenContinuously, listenStop, transcript] =
     useSpeechToText();
@@ -40,11 +39,22 @@ const Header = () => {
     setSearchText(transcript);
   }, [transcript]);
 
-
-
   const [apiPart2, setApiPart2] = useState(API_DEFAULT_PART_2_URL);
   const [apiPart3, setApiPart3] = useState(API_SERACH_TEXT);
+
+  useEffect(() => {
+    if (category) {
+      setApiPart3(category);
+      setApiPart2(API_URL_SEARCH_PART_2);
+    }else{
+      setApiPart2(API_DEFAULT_PART_2_URL)
+      setApiPart3(API_SERACH_TEXT)
+    }
+  }, [category]);
+
   useVideos(API_URL_PART_1, apiPart2, apiPart3, API_KEY);
+
+  console.log(category, apiPart3);
 
   const dispatch = useDispatch();
   const HandleSetCount = () => {
@@ -101,7 +111,7 @@ const Header = () => {
   }, [searchText]);
 
   return (
-    <header className="sticky top-0 dark:bg-black bg-white px-8 pb-16 md:pb-4 pt-4 w-full  flex justify-between items-center gap-9 z-20">
+    <header className="sticky top-0 dark:bg-black bg-white px-8 pb-16 md:pb-4 pt-4 w-full  flex justify-between items-center gap-9 z-20  ">
       <div className="flex justify-start items-center gap-6 sm:gap-10basis-full md:basis-auto ">
         <div
           className="w-12 h-12 flex justify-center items-center rounded-full hover:bg-neutral-300 dark:hover:bg-zinc-700"

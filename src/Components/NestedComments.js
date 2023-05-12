@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+
 import {
   addComment,
   addTopLevelComment,
@@ -11,6 +12,16 @@ import { useDispatch } from "react-redux";
 const generateUniqueId = () => {
   return Math.random().toString(36).slice(2, 9);
 };
+
+function countComments(comments) {
+  let count = comments.length;
+  for (let i = 0; i < comments.length; i++) {
+    if (comments[i].replies.length > 0) {
+      count += countComments(comments[i].replies);
+    }
+  }
+  return count;
+}
 
 const WriteComment = ({ data, handleWriteComment, isReply, isEdit }) => {
   const [text, setText] = useState("");
@@ -175,6 +186,8 @@ const CommentList = ({ list }) => {
 };
 
 const NestedComments = () => {
+  const comments = useSelector((store) => store.comment.items);
+  console.log(comments);
   const { items } = useSelector((store) => store.comment);
   const dispatch = useDispatch();
   const handleTopLevelComment = (data) => {
@@ -183,7 +196,10 @@ const NestedComments = () => {
   const [text, setText] = useState("");
   return (
     <div className=" flex flex-col px-6 gap-2 w-100% ">
-      <h2 className="font-bold text-2xl text-blue-700 pb-5 ">Comments</h2>
+      <h2 className="font-bold text-xl text-blue-700  ">
+        {" "}
+        {countComments(comments)} Comments
+      </h2>
       <div className="flex justify-between gap-1 items-center">
         <span className="flex text-md  px-4 text-white font-bold justify-center items-center w-[40px] h-[40px] rounded-full bg-stone-700 ">
           {"S"}

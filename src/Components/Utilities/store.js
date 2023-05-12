@@ -7,6 +7,7 @@ import dataSlice from "./dataSlice";
 import countSlice from "./countSlice";
 import commentSlice from "./commentSlice";
 import channelSlice from "./channelSlice";
+import categorySlice from "./categorySlice";
 const store = configureStore({
   reducer: {
     searchSlice: searchSlice,
@@ -17,6 +18,7 @@ const store = configureStore({
     countSlice: countSlice,
     comment: commentSlice,
     channel: channelSlice,
+    category : categorySlice
   },
 });
 export default store;
