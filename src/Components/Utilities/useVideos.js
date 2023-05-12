@@ -65,6 +65,3 @@ const useVideos = (
 export default useVideos;
 
 
-// error -> https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&maxResults=16&chart=mostPopular&regionCode=INPolitics&key=AIzaSyDb8whlcnVXgcaL8rP21kQk8yjhiEKfvDo&pageToken=CBAQAA
-
-//https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=16&type=video&q=namaste%20javascript%20notes&key=AIzaSyDb8whlcnVXgcaL8rP21kQk8yjhiEKfvDo&pageToken=CBAQAA
