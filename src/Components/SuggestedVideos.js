@@ -62,7 +62,7 @@ const SuggestedVideos = () => {
  
 
   return !data.length ? (
-    <div className=" flex flex-wrap box  w-full lg:w-[300px]  justify-center items-start gap-8 ">
+    <div className=" flex flex-wrap box pt-10  w-full lg:w-[300px]  justify-center items-start gap-8 ">
       {Array(12)
         .fill("")
         .map((shimmer, index) => (
@@ -70,13 +70,13 @@ const SuggestedVideos = () => {
         ))}
     </div>
   ) : (
-    <div className="  flex flex-wrap box  w-full lg:w-[300px]  justify-center items-start gap-8 ">
+    <div className="  flex flex-wrap box  pt-10 w-full lg:w-[300px]  justify-center items-start gap-8 ">
       {data?.map((card, index) => (
         <SuggestionCard key={card.id + index} data={card} />
       ))}
       {isLoading && (
         <>
-          <div className="flex flex-wrap box  w-full lg:w-[300px]  justify-center items-start gap-8 ">
+          <div className="flex flex-wrap box pt-10  w-full lg:w-[300px]  justify-center items-start gap-8 ">
             {Array(8)
               .fill("")
               .map((shimmer, index) => (

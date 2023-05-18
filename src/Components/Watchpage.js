@@ -8,6 +8,7 @@ import { TbShare3, TbDots } from "react-icons/tb";
 import { TfiDownload } from "react-icons/tfi";
 import { useSelector } from "react-redux";
 import { API_KEY_CODE } from "./Utilities/constants";
+import LiveChat from "./LiveChat";
 
 const WatchPage = () => {
   const { channelInfo } = useSelector((store) => store.channel);
@@ -105,7 +106,7 @@ const WatchPage = () => {
               <BsPersonCircle className="md:text-4xl text-lg mb-1 cursor-pointer"></BsPersonCircle>
               <div className="flex flex-col">
                 <h2 className="font-semibold md:text-base text-sm">
-                  {stats[0]?.snippet?.channelTitle}
+                  {stats?.[0]?.snippet?.channelTitle}
                 </h2>
                 <span className="text-xs text-stone-500">
                   {formatCount(subsCount)} subscribers
@@ -163,6 +164,9 @@ const WatchPage = () => {
           </div>
         </div>
         {<NestedComments />}
+      </div>
+      <div className=" static lg:absolute  text-white dark:text-black w-[100%]  lg:w-[28%]  right-4 top-[0%] z-999  border-solid border-2 bg-black dark:bg-white ">
+        <LiveChat />
       </div>
       <SuggestedVideos />
     </div>
