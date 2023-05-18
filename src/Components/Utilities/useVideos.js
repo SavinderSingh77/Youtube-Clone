@@ -14,6 +14,7 @@ const useVideos = (
   console.log(API_URL_PART_3);
   const { count } = useSelector((store) => store.countSlice);
   const [runAPI, setRunAPI] = useState(count);
+  const [isError, setIsError] = useState(false)
 
   useEffect(() => {
     setRunAPI(count);
@@ -33,8 +34,8 @@ const useVideos = (
   }, [runAPI]);
 
   useEffect(() => {
-    handleAPIData([data, isLoading]);
-  }, [isLoading]);
+    handleAPIData([data, isLoading,isError]);
+  }, [isLoading,isError]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,15 +52,29 @@ const useVideos = (
 
   async function getCard() {
 
-    setIsLoading(true);
-    const data = await fetch(`${API_URL}&pageToken=${pageToken}`);
-    const dataJson = await data.json();
-    setPageToken(dataJson.nextPageToken);
-    setIsLoading(false);
-    setData((prevItems) => [...prevItems, ...dataJson?.items]);
+    try{
+  
+      setIsLoading(true);
+      const data = await fetch(`${API_URL}&pageToken=${pageToken}`);
+      if(data.ok){
+        const dataJson = await data.json();
+        setPageToken(dataJson.nextPageToken);
+        setIsLoading(false);
+        setData((prevItems) => [...prevItems, ...dataJson?.items]);
+      }else{
+        throw new Error ("Error")
+      }
+     
+    }catch{
+       
+      setIsError(true)
+     
+    }
+
+   
   }
 
-  return [data, isLoading];
+  return [data, isLoading, isError];
 };
 
 export default useVideos;

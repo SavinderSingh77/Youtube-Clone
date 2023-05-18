@@ -1,6 +1,7 @@
 import Shimmer from "./Shimmer";
 import SuggestionCard from "./SuggestionCard";
 import { useEffect, useState } from "react";
+import Error from "./Error";
 
 import {
   SUGGESTIONS_VIDEOS_URL_PART_1,
@@ -10,12 +11,13 @@ import {
 } from "./Utilities/constants";
 import { useParams } from "react-router-dom";
 
-const SuggestedVideos = () => {
+const SuggestedVideos = ({ handleOnError }) => {
   const { videoId } = useParams();
   const [data, setData] = useState([]);
   const [pageToken, setPageToken] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-
+  const [isError, setIsError] = useState(false);
+  console.log(handleOnError());
   useEffect(() => {
     suggestions();
   }, []);
@@ -43,23 +45,29 @@ const SuggestedVideos = () => {
   }, [pageToken]);
   async function suggestions() {
     setIsLoading(true);
-    const fetchData = await fetch(
-      SUGGESTIONS_VIDEOS_URL_PART_1 +
-        videoId +
-        SUGGESTIONS_VIDEOS_URL_PART_3 +
-        API_KEY +
-        "&pageToken=" +
-        pageToken
-    );
-    const dataJson = await fetchData.json();
+    try {
+      const fetchData = await fetch(
+        SUGGESTIONS_VIDEOS_URL_PART_1 +
+          videoId +
+          SUGGESTIONS_VIDEOS_URL_PART_3 +
+          API_KEY +
+          "&pageToken=" +
+          pageToken
+      );
 
-   
-    setPageToken(dataJson.nextPageToken);
-    setData((prevItems) => [...prevItems, ...dataJson?.items]);
-    setIsLoading(false);
-    
+      if (fetchData.ok) {
+        const dataJson = await fetchData.json();
+
+        setPageToken(dataJson.nextPageToken);
+        setData((prevItems) => [...prevItems, ...dataJson?.items]);
+        setIsLoading(false);
+      } else {
+        throw new Error("Error");
+      }
+    } catch (error) {
+      handleOnError(true);
+    }
   }
- 
 
   return !data.length ? (
     <div className=" flex flex-wrap box pt-10  w-full lg:w-[300px]  justify-center items-start gap-8 ">

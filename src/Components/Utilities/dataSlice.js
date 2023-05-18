@@ -5,12 +5,14 @@ const dataSlice = createSlice({
     items: {
       data: [],
       isLoading: true,
+      isError : false,
     },
   },
   reducers: {
     getVideos: (state, action) => {
       state.items.data = action.payload[0];
       state.items.isLoading = action.payload[1];
+      state.items.isError = action.payload[2]
     },
   },
 });

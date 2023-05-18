@@ -4,8 +4,8 @@ import React from "react";
 import { Outlet, createBrowserRouter } from "react-router-dom";
 import SideBar from "./Components/SideBar";
 import MainContainer from "./Components/MainContainer";
-import WatchPage from "./Components/Watchpage.js"
-
+import WatchPage from "./Components/Watchpage.js";
+import Error from "./Components/Error";
 
 function App() {
   return (
@@ -23,15 +23,17 @@ const AppRouter2 = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <Error />,
     children: [
       {
         path: "/",
         element: <MainContainer />,
       },
       {
-        path : "/Watch/:videoId",
-        element : <WatchPage />
-      }
+        path: "/Watch/:videoId",
+        element: <WatchPage />,
+ 
+      },
     ],
   },
 ]);

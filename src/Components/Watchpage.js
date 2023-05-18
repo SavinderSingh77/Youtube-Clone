@@ -9,6 +9,7 @@ import { TfiDownload } from "react-icons/tfi";
 import { useSelector } from "react-redux";
 import { API_KEY_CODE } from "./Utilities/constants";
 import LiveChat from "./LiveChat";
+import Error from "./Error";
 
 const WatchPage = () => {
   const { channelInfo } = useSelector((store) => store.channel);
@@ -19,19 +20,34 @@ const WatchPage = () => {
   const [subsCount, setSubsCount] = useState("");
   const [descp, setDescp] = useState("");
   const [showDescription, setShowDescription] = useState(500);
-
+  const [isError, setIsError] = useState(false);
+  console.log(videoId);
+  const handleOnError = (param) => {
+    setIsError(param);
+  };
   async function channel(channelInfo) {
-    console.log(channelInfo?.id?.videoId || channelInfo?.id, channelInfo);
-    const fetchData = await fetch(
-      `https://www.googleapis.com/youtube/v3/videos?key=${API_KEY_CODE}&part=snippet,statistics&id=${
-        channelInfo?.id?.videoId || channelInfo?.id
-      }`
-    );
-    const dataJson = await fetchData.json();
-    setStats(dataJson.items);
-    setDescp(dataJson.items[0]?.snippet?.localized?.description);
+    try {
+      console.log(channelInfo?.id?.videoId || channelInfo?.id, channelInfo);
+
+      const fetchData = await fetch(
+        `https://www.googleapis.com/youtube/v3/videos?key=${API_KEY_CODE}&part=snippet,statistics&id=${
+          channelInfo?.id?.videoId || channelInfo?.id
+        }`
+      );
+
+      if (fetchData.ok) {
+        const dataJson = await fetchData.json();
+        setStats(dataJson.items);
+        setDescp(dataJson.items[0]?.snippet?.localized?.description);
+      } else {
+        throw new Error("Error");
+      }
+    } catch (error) {
+      setIsError(true);
+  ;
+    }
   }
-  console.log(stats);
+
   useEffect(() => {
     channel(channelInfo);
   }, []);
@@ -80,8 +96,9 @@ const WatchPage = () => {
       return (count / 1000000).toFixed(1) + "M ";
     }
   }
+  console.log(isError);
 
-  return (
+  return !isError ? (
     <div className="flex flex-col lg:flex-row w-[100vw] justify-center gap-20  pt-4 px-3">
       <div className=" flex flex-col w-[100%] lg:w-[70%] ">
         <div className="w-[100%] lg:w-[100%]">
@@ -100,6 +117,7 @@ const WatchPage = () => {
             muted
             autoPlay
             onLoad={handleOnLoad}
+            onError={handleOnError}
           ></iframe>
           <div className="flex justify-between flex-wrap md:flex-nowrap items-center md:gap-9 gap-3 my-8">
             <div className="flex justify-center gap-2 items-center">
@@ -120,7 +138,7 @@ const WatchPage = () => {
               <div className="flex justify-center items-center">
                 <button className="bg-stone-100 font-semibold flex justify-center gap-2 items-center md:p-2 p-1 rounded-l-full border-r-2 border-stone-200 md:text-base text-xs hover:bg-stone-200">
                   <AiOutlineLike className="md:text-2xl"></AiOutlineLike>{" "}
-                  {formatCount(stats[0]?.statistics?.likeCount)}
+                  {formatCount(stats?.[0]?.statistics?.likeCount)}
                 </button>
                 <button className="bg-stone-100 md:p-2 p-1 rounded-r-full hover:bg-stone-200">
                   <AiOutlineDislike className="md:text-2xl"></AiOutlineDislike>
@@ -139,7 +157,7 @@ const WatchPage = () => {
           </div>
           <div className=" flex flex-col gap-3">
             <span className=" text-xl">
-              {stats[0]?.snippet?.localized?.title}
+              {stats?.[0]?.snippet?.localized?.title}
             </span>{" "}
             <span className="pb-8">
               {descp?.length > 500
@@ -168,8 +186,10 @@ const WatchPage = () => {
       <div className=" static lg:absolute  text-white dark:text-black w-[100%]  lg:w-[28%]  right-4 top-[0%] z-999  border-solid border-2 bg-black dark:bg-white ">
         <LiveChat />
       </div>
-      <SuggestedVideos />
+      <SuggestedVideos  handleOnError = {handleOnError} />
     </div>
+  ) : (
+    <Error />
   );
 };
 
