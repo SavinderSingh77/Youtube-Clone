@@ -5,7 +5,10 @@ const toggleSideBar = createSlice({
     isOpen: false,
   },
   reducers: {
-    toggle: (state) => {
+    toggle: (state, action) => {
+      if (action.payload) {
+        state.isOpen = action.payload;
+      }
       state.isOpen = !state.isOpen;
     },
   },

@@ -6,20 +6,47 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { category } from "./Utilities/categorySlice";
 import { setCount } from "./Utilities/countSlice";
+import { toggle } from "./Utilities/toggleSideBar";
+import { faCode } from "@fortawesome/free-solid-svg-icons";
+import { faHandshake } from "@fortawesome/free-solid-svg-icons";
+import { faMicrochip } from "@fortawesome/free-solid-svg-icons";
+import { faBaseballBatBall } from "@fortawesome/free-solid-svg-icons";
+import { faNewspaper } from "@fortawesome/free-solid-svg-icons";
+import { faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faIcons } from "@fortawesome/free-solid-svg-icons";
+
+// const categories = [
+//   "Home",
+//   "Entertaiment",
+//   "Politics",
+//   "Technology",
+//   "Coding",
+//   "Cricket",
+//   "Social",
+//   "Latest News",
+// ];
 
 const categories = [
-  "Home",
-  "Entertaiment",
-  "Politics",
-  "Technology",
-  "Coding",
-  "Cricket",
-  "Social",
-  "Latest News",
+  { id: "1", category: "Home", icon: faHouse },
+
+  { id: "2", category: "Entertaiment", icon: faIcons },
+
+  { id: "3", category: "Politics", icon: faHandshake },
+
+  { id: "4", category: "Technology", icon: faMicrochip },
+
+  { id: "5", category: "Cricket", icon: faBaseballBatBall },
+
+  { id: "6", category: "Social", icon: faUsers },
+
+  { id: "7", category: "Latest News", icon: faNewspaper },
 ];
 
 function SideBar() {
   const dispatch = useDispatch();
+  const handleIsOpen = () => {
+    dispatch(toggle(true));
+  };
   const HandleSetCount = () => {
     dispatch(setCount());
   };
@@ -46,15 +73,16 @@ function SideBar() {
       {categories.map((item, index) => {
         return (
           <div
-            key={index}
+            key={item.id}
             className={` w-full px-4 rounded-md  flex items-center justify-start gap-6 cursor-pointer  hover:bg-neutral-300  dark:hover:bg-zinc-800  ${
-              activeCategory === item
+              activeCategory === item.category
                 ? "bg-neutral-300  dark:bg-zinc-800"
                 : null
             } `}
             onClick={() => {
-              setActiveCategory(item);
-              let text = item;
+              handleIsOpen();
+              setActiveCategory(item.category);
+              let text = item.category;
               if (text === "Home") {
                 text = "";
                 handleCategory(text);
@@ -65,9 +93,10 @@ function SideBar() {
               }
             }}
           >
-            <FontAwesomeIcon icon={faHouse} className="text-xl py-3" />
+            <FontAwesomeIcon icon={item.icon} className="text-xl py-3" />
+
             <Link to="/">
-              <span className="">{item}</span>
+              <span className="">{item.category}</span>
             </Link>
           </div>
         );

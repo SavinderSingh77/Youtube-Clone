@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
   addComment,
@@ -54,7 +56,7 @@ const WriteComment = ({ data, handleWriteComment, isReply, isEdit }) => {
   }, [isEdit, isReply]);
 
   return (
-    <div className="flex flex-col gap-2 px-12 justify-center items-center ">
+    <div className="flex flex-col gap-2 px-2 md:px-12 justify-center items-center ">
       <input
         type="text"
         placeholder="Write a comment"
@@ -109,9 +111,9 @@ const Comment = ({ data }) => {
 
   return (
     <div>
-      <div className=" flex justify-start items-center gap-2 py-1 shadow-xl bg-[#04090ab6] dark:bg-white file:my-4 border-none px-3 rounded-lg">
+      <div className=" flex justify-start items-center gap-2 py-1 shadow-xl bg-[#04090ab6] dark:bg-white file:my-4 border-none pl-2 rounded-lg">
         {" "}
-        <span className="flex text-md  text-white font-bold justify-center items-center w-[40px] h-[40px] rounded-full bg-stone-700 ">
+        <span className="flex text-md  text-white text-[20px] font-bold justify-center items-center px-[12px] py-[5px] rounded-full bg-stone-700 ">
           {data.author.slice(0, 1).toUpperCase()}
         </span>{" "}
         <div className="flex flex-col justify-start items-start dark:text-black text-white">
@@ -186,8 +188,8 @@ const CommentList = ({ list }) => {
 };
 
 const NestedComments = () => {
+  const [isCommentOpen, setIsCommentOpen] = useState(false);
   const comments = useSelector((store) => store.comment.items);
-  console.log(comments);
   const { items } = useSelector((store) => store.comment);
   const dispatch = useDispatch();
   const handleTopLevelComment = (data) => {
@@ -196,10 +198,29 @@ const NestedComments = () => {
   const [text, setText] = useState("");
   return (
     <div className=" flex flex-col px-6 gap-2 w-100% ">
-      <h2 className="font-bold text-xl text-blue-700  ">
-        {" "}
-        {countComments(comments)} Comments
-      </h2>
+      <div className="flex justify-between ">
+        <h2 className="font-bold text-xl text-blue-700  ">
+          {" "}
+          {countComments(comments)} Comments
+        </h2>
+        <div
+          onClick={() => {
+            setIsCommentOpen(!isCommentOpen);
+          }}
+        >
+          {!isCommentOpen ? (
+            <FontAwesomeIcon
+              className="pr-10 cursor-pointer"
+              icon={faCaretDown}
+            />
+          ) : (
+            <FontAwesomeIcon
+              className="pr-10 cursor-pointer"
+              icon={faCaretUp}
+            />
+          )}
+        </div>
+      </div>
       <div className="flex justify-between gap-1 items-center">
         <span className="flex text-md  px-4 text-white font-bold justify-center items-center w-[40px] h-[40px] rounded-full bg-stone-700 ">
           {"S"}
@@ -216,6 +237,7 @@ const NestedComments = () => {
         <button
           className="px-4 py-2 border-stone-700 border rounded-3xl font-semibold bg-black text-white hover:bg-white hover:text-black transition-all duration-500 ease-in-out active:scale-95"
           onClick={() => {
+            setIsCommentOpen(true);
             handleTopLevelComment({
               id: generateUniqueId(),
               control: true,
@@ -230,9 +252,12 @@ const NestedComments = () => {
           Comment
         </button>
       </div>
-      <div className="border-b border-stone-700 mb-6  "></div>
 
-      <CommentList list={items} />
+      {isCommentOpen ? (
+        <div className="border-b border-stone-700 mb-6  ">
+          <CommentList list={items} />
+        </div>
+      ) : null}
     </div>
   );
 };

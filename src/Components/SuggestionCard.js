@@ -2,14 +2,17 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { channelInfo } from "./Utilities/channelSlice";
-
+import { toggle } from "./Utilities/toggleSideBar";
 
 const SuggestionCard = ({ data }) => {
   const dispatch = useDispatch();
-  const handleChannelInfo = (data)=>{
-    dispatch(channelInfo(data))
-  }
- 
+  const handleIsOpen = () => {
+    dispatch(toggle(true));
+  };
+  const handleChannelInfo = (data) => {
+    dispatch(channelInfo(data));
+  };
+
   const videoId = data?.id?.videoId || data?.id;
   function formatLikeCount(likeCount) {
     if (!likeCount) {
@@ -56,8 +59,11 @@ const SuggestionCard = ({ data }) => {
 
   return (
     <Link
-      to={`/watch/${videoId}`} onClick = {()=>{handleChannelInfo(data)}}
-      
+      to={`/watch/${videoId}`}
+      onClick={() => {
+        handleChannelInfo(data);
+        handleIsOpen();
+      }}
     >
       <div className="w-72 flex flex-col items-center cursor-pointer  hover:scale-105 transition-all duration-200 ease-in-out  ">
         <div className="w-72 ">

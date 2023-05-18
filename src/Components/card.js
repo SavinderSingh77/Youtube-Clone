@@ -1,9 +1,13 @@
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { channelInfo } from "./Utilities/channelSlice";
+import { toggle } from "./Utilities/toggleSideBar";
 
 const Card = ({ data }) => {
   const dispatch = useDispatch();
+  const handleIsOpen = () =>{
+    dispatch(toggle(true))
+  }
   const handleChannelInfo = (data) => {
     dispatch(channelInfo(data));
   };
@@ -57,6 +61,7 @@ const Card = ({ data }) => {
       to={`/watch/${videoId}`}
       onClick={() => {
         handleChannelInfo(data);
+        handleIsOpen()
       }}
     >
       <div className="w-72 flex flex-col items-center cursor-pointer  hover:scale-105 transition-all duration-200 ease-in-out  ">
