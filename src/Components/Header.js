@@ -189,7 +189,7 @@ const Header = () => {
               hideSearchHandler(false);
               setTimeout(() => {
                 setShowSuggestionsBox(false);
-              }, 100);
+              }, 500);
             }}
           />
 
@@ -252,18 +252,18 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="flex justify-end items-center gap-3 ">
-        <div className="flex justify-center items-center w-12 h-12 border border-solid border-slate-800 rounded-full bg-gray-50   ">
+      <div className="flex justify-end items-center gap-8 ">
+        <div className="flex justify-center items-center w-8 h-8 border border-solid border-slate-800 rounded-full bg-gray-50   ">
           <FontAwesomeIcon
             icon={faUser}
-            className="text-slate-800 cursor-pointer"
+            className=" text-slate-800 cursor-pointer "
           />
         </div>
         <div className="">
           {!isDarkMode ? (
             <FontAwesomeIcon
               icon={faMoon}
-              className="text-3xl cursor-pointer"
+              className="text-2xl cursor-pointer"
               onClick={() => {
                 toggleMode();
               }}
@@ -271,7 +271,7 @@ const Header = () => {
           ) : (
             <FontAwesomeIcon
               icon={faSun}
-              className="text-3xl cursor-pointer"
+              className="text-2xl cursor-pointer"
               onClick={() => {
                 toggleMode();
               }}

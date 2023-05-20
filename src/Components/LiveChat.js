@@ -111,7 +111,7 @@ const LiveChat = () => {
 
         return updatedList;
       });
-    }, 3000);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [chatList]);
@@ -131,7 +131,7 @@ const LiveChat = () => {
       </div>
 
       {isShowChat ? (
-        <div className="  h-[500px] overflow-y-scroll flex flex-col-reverse   ">
+        <div className="  h-[400px] overflow-y-scroll flex flex-col-reverse   ">
           {chatList?.map((chat) => {
             return <Chat name={chat?.name} message={chat?.message} />;
           })}
@@ -153,16 +153,19 @@ const LiveChat = () => {
             className="cursor-pointer"
             icon={faPaperPlane}
             onClick={() => {
-              setChatList((prev) => {
-                const updatedList = [...prev];
-                updatedList.unshift({
-                  name: "Savinder",
-                  message: text,
+              if(text){
+                setChatList((prev) => {
+                  const updatedList = [...prev];
+                  updatedList.unshift({
+                    name: "Savinder",
+                    message: text,
+                  });
+                  return updatedList;
                 });
-                return updatedList;
-              });
-
-              setText("");
+  
+                setText("");
+              }
+              
             }}
           />
         </div>

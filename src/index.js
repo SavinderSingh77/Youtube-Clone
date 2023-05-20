@@ -5,7 +5,6 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./Components/Utilities/store.js";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
 import { RouterProvider } from "react-router-dom";
 import AppRouter2 from "./App";
 const queryClient = new QueryClient();
@@ -19,7 +18,7 @@ root.render(
       </RouterProvider>
     </Provider>
 
-    <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+   >
   </QueryClientProvider>
 );
 

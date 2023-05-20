@@ -183,7 +183,7 @@ const WatchPage = () => {
         </div>
         {<NestedComments />}
       </div>
-      <div className=" static lg:absolute  text-white dark:text-black w-[100%]  lg:w-[28%]  right-4 top-[0%] z-999  border-solid border-2 bg-black dark:bg-white ">
+      <div className=" static lg:absolute  text-white dark:text-black w-[100%]  lg:w-[28%]  right-4 top-[0%] z-999  border-solid border-2 bg-black dark:bg-white rounded-md py-4 px-2">
         <LiveChat />
       </div>
       <SuggestedVideos  handleOnError = {handleOnError} />
