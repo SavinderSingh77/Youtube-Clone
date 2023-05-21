@@ -14,7 +14,7 @@ const useSearch = (searchText) => {
 
   async function searchSuggestions() {
     const fetchData = await fetch(
-      "http://suggestqueries.google.com/complete/search?client=firefox&q=" +
+      "https://suggestqueries.google.com/complete/search?client=firefox&q=" +
         searchText
     );
     const dataJson = await fetchData.json();
